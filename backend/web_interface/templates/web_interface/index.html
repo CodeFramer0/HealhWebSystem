@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Личный кабинет</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .dates p {
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .dates p:hover {
+    color: #007bff;
+  }
+
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header text-center">
+    <h1 class="title">Личный кабинет</h1>
+    <p class="subtitle">Здесь вы можете оставить жалобу на свое здоровьек или просмотреть историю своих жалоб</p>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <button id="createComplaintButton" class="btn btn-primary btn-block">Создать жалобу</button>
+    </div>
+    <div class="col-md-6">
+      <button id="selectDateButton" class="btn btn-primary btn-block">Выбрать дату</button>
+    </div>
+  </div>
+  <div id="complaintForm" style="display: none;">
+    <form>
+      <div class="form-group">
+        <label for="subject">Тема жалобы:</label>
+        <input type="text" id="subject" name="subject" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="description">Описание жалобы:</label>
+        <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="complaintDate">Дата жалобы:</label>
+        <input type="text" id="complaintDate" name="complaintDate" class="form-control" required>
+      </div>
+      <button type="submit" id="submitComplaintButton" class="btn btn-primary btn-block">Отправить жалобу</button>
+    </form>
+  </div>
+  <div class="complaints" id="complaints" style="display: none;">
+    <h2>Жалобы</h2>
+    <!-- Сюда будет вставлен список жалоб -->
+  </div>
+  <div class="dates" id="dates" style="display: none;">
+    <h2>Даты с жалобами</h2>
+    <!-- Сюда будет вставлен список дат -->
+  </div>
+</div>
+<script>
+var complaints = [
+  {
+    subject: 'Болит сердце',
+    date: '15 мая 2022',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+  },
+  {
+    subject: 'Болят ноги',
+    date: '10 мая 2022',
+    description: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+  },
+  {
+    subject: 'Поднялась температура',
+    date: '10 мая 2022',
+    description: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+  }
+];
+
+$('#createComplaintButton').on('click', function() {
+  $('#complaintForm').toggle();
+  $('#complaints').hide();
+  if ($('#complaintForm').is(":visible")) {
+    $(this).text("Отменить создание");
+  } else {
+    $(this).text("Создать жалобу");
+  }
+});
+
+$('#complaintForm').submit(function(event) {
+  event.preventDefault();
+  var subject = $('#subject').val();
+  var description = $('#description').val();
+  var complaintDate = $('#complaintDate').val();
+  complaints.push({
+    subject: subject,
+    date: complaintDate,
+    description: description
+  });
+  $('#complaintForm')[0].reset();
+  $('#complaintForm').toggle();
+  $('#createComplaintButton').text("Создать жалобу");
+  $('#complaints').show();
+  showDatesWithComplaints();
+});
+
+$('#selectDateButton').on('click', function() {
+  $('#dates').toggle();
+  if ($('#dates').is(":visible")) {
+    $('#dates').empty();
+    showDatesWithComplaints();
+  }
+});
+
+function showComplaintsByDate(selectedDate) {
+  var complaintsContainer = $('#complaints');
+  complaintsContainer.show();
+  complaintsContainer.empty();
+
+  var filteredComplaints = complaints.filter(function(complaint) {
+    return complaint.date === selectedDate;
+  });
+
+  if (filteredComplaints.length === 0) {
+    complaintsContainer.html('<p>Нет жалоб на выбранную дату.</p>');
+  } else {
+    $.each(filteredComplaints, function(index, complaint) {
+      var complaintDiv = $('<div class="complaint">').html(`
+        <h3>${complaint.subject}</h3>
+        <p>Дата: ${complaint.date}</p>
+        <p>${complaint.description}</p>
+      `);
+      complaintsContainer.append(complaintDiv);
+    });
+  }
+}
+
+function showDatesWithComplaints() {
+  var datesContainer = $('#dates');
+  datesContainer.empty();
+
+  var dates = complaints.map(function(complaint) {
+    return complaint.date;
+  });
+
+  var uniqueDates = [...new Set(dates)];
+
+  uniqueDates.forEach(function(date) {
+    var complaintsCount = complaints.filter(function(complaint) {
+      return complaint.date === date;
+    }).length;
+
+    var dateParagraph = $('<p>').html(`${date}, Количество жалоб: ${complaintsCount}`);
+    datesContainer.append(dateParagraph);
+
+    dateParagraph.on('click', function() {
+      showComplaintsByDate(date);
+    });
+  });
+}
+
+flatpickr("#complaintDate", {
+  dateFormat: "d.m.Y",
+  locale: "ru",
+});
+
+</script>
+</body>
+</html>

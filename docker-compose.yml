@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: django
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always  
+    command: >
+      sh -c "python manage.py makemigrations robot &&
+            python manage.py migrate robot&&
+            gunicorn core.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - static:/backend/static
+      - media:/backend/media 
+    expose:
+      - 8000
+    env_file:
+      - ./backend/.env
+
+
+  db:
+    container_name: db
+    restart: always
+    image: postgres:16.2
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: "hello_django_prod"
+      POSTGRES_USER: "hello_django"
+      POSTGRES_PASSWORD: "hello_django"
+    ports:
+      - 5432:5432
+
+
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    restart: always
+    volumes:
+      - static:/backend/static
+      - media:/backend/media
+    ports:
+      - 80:80
+    depends_on:
+      - web
+
+
+
+
+volumes:
+  postgres_data:
+  static:
+  media:
+
