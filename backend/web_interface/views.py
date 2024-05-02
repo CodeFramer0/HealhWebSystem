@@ -8,8 +8,8 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-def all(request):
-        return render(request, 'web_interface/index.html')
+def registration(request):
+        return render(request, 'web_interface/registration.html')
 
 
 

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,48 +7,11 @@
 <title>Личный кабинет</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="{% static 'web_interface/css/index.css' %}">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
-<style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f4;
-  }
 
-  .container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
-
-  .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
-
-  .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-  }
-
-  .form-group {
-    margin-bottom: 20px;
-  }
-
-  .dates p {
-    cursor: pointer;
-    transition: color 0.3s;
-  }
-
-  .dates p:hover {
-    color: #007bff;
-  }
-
-</style>
 </head>
 <body>
 <div class="container">
@@ -60,7 +24,7 @@
       <button id="createComplaintButton" class="btn btn-primary btn-block">Создать жалобу</button>
     </div>
     <div class="col-md-6">
-      <button id="selectDateButton" class="btn btn-primary btn-block">Выбрать дату</button>
+      <button id="selectDateButton" class="btn btn-primary btn-block">Жалобы</button>
     </div>
   </div>
   <div id="complaintForm" style="display: none;">
