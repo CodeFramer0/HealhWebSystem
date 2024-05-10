@@ -8,8 +8,8 @@ services:
       dockerfile: Dockerfile
     restart: always  
     command: >
-      sh -c "python manage.py makemigrations robot &&
-            python manage.py migrate robot&&
+      sh -c "python manage.py makemigrations web_interface &&
+            python manage.py migrate &&
             gunicorn core.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - static:/backend/static

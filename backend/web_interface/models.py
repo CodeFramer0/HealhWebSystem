@@ -1,3 +1,7 @@
 from django.db import models
 
-# Create your models here.
+
+class Complaint(models.Model):
+    title = models.CharField(verbose_name="Название")
+    description = models.CharField(verbose_name='Описание')
+    date = models.DateField(verbose_name='Дата')

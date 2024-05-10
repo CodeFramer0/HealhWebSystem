@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'robot.apps.RobotConfig',
     'web_interface.apps.WebInterfaceConfig',
     'django.contrib.staticfiles',
     'rest_framework',
