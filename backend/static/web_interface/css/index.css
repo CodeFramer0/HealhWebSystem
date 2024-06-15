@@ -11,7 +11,13 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
-
+  .complaints{
+    display: none;
+  }
+  .complaints.active{
+    padding: 20px;
+    display: block;
+  }
   .btn-primary {
     background-color: #007bff;
     border-color: #007bff;
@@ -33,4 +39,11 @@ body {
 
   .dates p:hover {
     color: #007bff;
+  }
+  .complaintForm{
+    display: none;
+  }
+
+  .complaintForm.active{
+    display: block;
   }
